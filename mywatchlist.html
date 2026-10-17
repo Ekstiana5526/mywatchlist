@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b16">
+<title>MyWatchList — Daftar Tontonan</title>
+<style>
+:root{--bg:#080a13;--panel:#111626;--panel2:#171e31;--line:#29324b;--text:#f4f5ff;--muted:#9ca7c2;--purple:#8057ff;--purple2:#6236e8;--green:#32d6a0;--red:#ff5470;--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#24174a 0,transparent 45%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #a994ff;outline-offset:2px}
+.app{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:100vh}.sidebar{border-right:1px solid var(--line);padding:25px 17px;display:flex;flex-direction:column;gap:28px;background:#090c17e8}.brand{display:flex;align-items:center;gap:11px;padding:0 5px}.brand-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a58aff,#6036ed);display:grid;place-items:center;font-size:23px;box-shadow:0 7px 25px #6c43ff42}.brand strong{display:block;font-size:17px;letter-spacing:-.4px}.brand small{color:var(--muted);font-size:11px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:var(--muted);padding:12px 13px;border-radius:12px;text-align:left;display:flex;gap:12px;align-items:center}.nav button.active,.nav button:hover{background:#38266e;color:white}.nav .nav-icon{width:20px;text-align:center}.sidebar-note{margin-top:auto;padding:14px;color:#8791ad;font-size:12px;border-top:1px solid var(--line)}
+main{padding:30px clamp(16px,3vw,42px) 50px;max-width:1600px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:25px}.eyebrow{color:#b7a7ff;font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase}.topbar h1{font-size:clamp(24px,3vw,35px);margin:4px 0 3px;letter-spacing:-1px}.topbar p{margin:0;color:var(--muted)}.primary,.secondary,.danger{border:1px solid transparent;border-radius:12px;padding:11px 16px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.18s}.primary{background:linear-gradient(135deg,var(--purple),var(--purple2));color:white;box-shadow:0 6px 20px #6d43ff30}.primary:hover{filter:brightness(1.12);transform:translateY(-1px)}.secondary{background:#1b2338;color:#e8ebff;border-color:#303b58}.secondary:hover{background:#26304a}.danger{background:#351523;color:#ffb8c4;border-color:#793046}.danger:hover{background:#4b1a2a}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:25px 0 30px}.stat{background:linear-gradient(145deg,#171e31,#101523);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px}.stat-icon{width:45px;height:45px;flex:0 0 45px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:#29204d}.stat:nth-child(2) .stat-icon{background:#402b42}.stat:nth-child(3) .stat-icon{background:#153b38}.stat-label{font-size:12px;color:var(--muted)}.stat-value{font-size:27px;font-weight:800;line-height:1.2}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:14px}.section-head h2{font-size:20px;margin:0}.section-head p{margin:3px 0 0;color:var(--muted);font-size:13px}.tools{display:flex;gap:10px;margin-bottom:20px}.search-wrap{position:relative;flex:1;min-width:140px}.search-wrap span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}.search{width:100%;background:#101626;border:1px solid var(--line);border-radius:12px;padding:12px 14px 12px 40px;color:var(--text)}.filter{min-width:165px;background:#101626;border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--text)}.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:17px}.movie-card{min-width:0;overflow:hidden;background:linear-gradient(160deg,#151c2e,#0e1320);border:1px solid #242e47;border-radius:15px;transition:transform .2s,border-color .2s}.movie-card:hover{transform:translateY(-3px);border-color:#6550b5}.poster-wrap{position:relative;aspect-ratio:2/2.85;background:#202941;overflow:hidden}.poster{width:100%;height:100%;object-fit:cover;display:block}.poster-fallback{position:absolute;inset:0;display:none;place-items:center;background:linear-gradient(135deg,#30234f,#121b30);color:#b6a6ff;font-size:42px}.status{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800;white-space:nowrap}.status.todo{background:#39256e;color:#d9cdff}.status.done{background:#123e35;color:#8af2d0}.poster-wrap .status{position:absolute;left:9px;bottom:9px;backdrop-filter:blur(10px)}.card-body{padding:12px}.card-title{font-weight:750;font-size:14px;line-height:1.35;margin:0 0 5px;overflow-wrap:anywhere}.meta{color:var(--muted);font-size:11px;margin-bottom:9px}.stars{font-size:12px;color:#ffd66b;letter-spacing:1px;margin:2px 0 9px}.card-actions{display:grid;grid-template-columns:1fr 36px;gap:7px}.small-btn{border:1px solid #303a55;border-radius:9px;background:#1b2338;color:#e6e9ff;padding:8px 5px;font-size:11px;font-weight:700}.small-btn:hover{background:#30245c;border-color:#5b49a2}.icon-btn{border:1px solid #303a55;border-radius:9px;background:#171e30;color:#b8c1d9}.icon-btn:hover{color:#ff8799;border-color:#9e3850}.empty{padding:55px 20px;text-align:center;border:1px dashed #37415c;border-radius:17px;color:var(--muted);grid-column:1/-1}.empty .emoji{font-size:40px;margin-bottom:8px}.empty h3{color:var(--text);margin:4px}.hidden{display:none!important}
+.overlay{position:fixed;inset:0;background:#03050bd9;backdrop-filter:blur(8px);display:grid;place-items:center;padding:18px;z-index:20;overflow-y:auto}.modal{width:min(100%,570px);max-height:min(92vh,900px);overflow-y:auto;background:#111727;border:1px solid #333e5b;border-radius:20px;padding:23px;box-shadow:0 25px 100px #0009}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.modal-head h2{font-size:21px;margin:0}.close{border:0;background:transparent;color:#aab4cf;font-size:25px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:#c6cce0;font-weight:700}.field input,.field select,.field textarea{width:100%;border:1px solid #303b57;background:#0b1020;border-radius:10px;color:var(--text);padding:11px 12px;min-width:0}.field textarea{min-height:90px;resize:vertical}.field input::placeholder,.field textarea::placeholder{color:#65708d}.required{color:#ff8296}.form-error{color:#ff8296;font-size:12px;min-height:18px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.detail{display:grid;grid-template-columns:160px 1fr;gap:20px}.detail-poster{width:100%;border-radius:12px;aspect-ratio:2/3;object-fit:cover;background:#202941}.detail h2{margin:8px 0 5px;font-size:25px;line-height:1.2}.detail-meta{color:var(--muted);font-size:13px;margin-bottom:13px}.detail p{color:#c4cbe0;font-size:13px;line-height:1.7;white-space:pre-wrap}.detail-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.rating-box{margin-top:13px}.rating-label{font-size:12px;color:var(--muted);margin-bottom:4px}.rating-stars{display:flex;gap:4px}.rating-stars button{font-size:25px;border:0;background:transparent;color:#65708d;padding:0 2px}.rating-stars button.selected{color:#ffd45d}.toast-area{position:fixed;right:20px;top:20px;display:grid;gap:10px;z-index:50}.toast{padding:13px 17px;border-radius:12px;background:#10382f;border:1px solid #23755e;color:#c6ffeb;box-shadow:0 12px 35px #0006;max-width:min(370px,calc(100vw - 40px));animation:slidein .2s ease}.toast.error{background:#421a29;border-color:#8b344c;color:#ffd5dd}@keyframes slidein{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}.mobile-nav{display:none}
+@media(max-width:1200px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.app{grid-template-columns:205px minmax(0,1fr)}}
+@media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.app{grid-template-columns:1fr}.sidebar{display:none}main{padding:22px 18px 90px}.mobile-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:9px 8px calc(9px + env(safe-area-inset-bottom));background:#0c1020f5;border-top:1px solid var(--line);backdrop-filter:blur(12px)}.mobile-nav button{border:0;background:transparent;color:var(--muted);font-size:11px;display:grid;gap:2px;justify-items:center}.mobile-nav button.active{color:#b6a1ff}.mobile-nav span{font-size:19px}}
+@media(max-width:600px){main{padding:18px 13px 90px}.topbar{align-items:flex-start}.topbar h1{font-size:26px}.topbar p{font-size:12px;max-width:240px}.topbar .primary{padding:10px 11px;font-size:12px;white-space:nowrap}.stats{gap:8px;margin:19px 0 25px}.stat{display:block;padding:11px 9px;border-radius:13px}.stat-icon{width:33px;height:33px;font-size:17px;margin-bottom:8px}.stat-label{font-size:10px;min-height:29px;display:block}.stat-value{font-size:23px}.section-head{align-items:start}.tools{display:grid;grid-template-columns:1fr;gap:9px}.filter{width:100%}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card-body{padding:10px}.card-title{font-size:13px}.modal{padding:18px}.form-grid{grid-template-columns:1fr;gap:12px}.field.full{grid-column:auto}.detail{grid-template-columns:105px minmax(0,1fr);gap:13px}.detail h2{font-size:20px}.detail p{font-size:12px}.detail-actions{grid-column:1/-1}.detail-actions button{flex:1}.rating-stars button{font-size:22px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-icon">🎬</div><div><strong>MyWatchList</strong><small>Catat, tonton, nikmati.</small></div></div>
+    <nav class="nav" aria-label="Navigasi utama">
+      <button class="active" data-view="all"><span class="nav-icon">⌂</span>Beranda</button>
+      <button data-view="all"><span class="nav-icon">▤</span>Semua Tontonan</button>
+      <button data-view="todo"><span class="nav-icon">◷</span>Belum Ditonton</button>
+      <button data-view="done"><span class="nav-icon">☑</span>Selesai</button>
+    </nav>
+    <div class="sidebar-note">“Film bukan hanya hiburan, tapi juga pengalaman hidup.”<br><br>✦ 🎞 ✦</div>
+  </aside>
+  <main>
+    <header class="topbar">
+      <div><div class="eyebrow">PERSONAL WATCHLIST</div><h1>Daftar Tontonan</h1><p>Simpan film favoritmu, satu cerita dalam satu waktu.</p></div>
+      <button class="primary" id="addBtn"><span>＋</span> Tambah Tontonan</button>
+    </header>
+    <section class="stats" aria-label="Ringkasan tontonan">
+      <div class="stat"><div class="stat-icon">▣</div><div><div class="stat-label">Total Tontonan</div><div class="stat-value" id="totalCount">0</div></div></div>
+      <div class="stat"><div class="stat-icon">◷</div><div><div class="stat-label">Belum Ditonton</div><div class="stat-value" id="todoCount">0</div></div></div>
+      <div class="stat"><div class="stat-icon">✓</div><div><div class="stat-label">Selesai</div><div class="stat-value" id="doneCount">0</div></div></div>
+    </section>
+    <section>
+      <div class="section-head"><div><h2>Koleksi Kamu</h2><p id="resultCount">Semua tontonan dalam satu tempat</p></div></div>
+      <div class="tools">
+        <div class="search-wrap"><span>⌕</span><input class="search" id="searchInput" type="search" placeholder="Cari judul film atau serial..." aria-label="Cari judul"></div>
+        <select class="filter" id="statusFilter" aria-label="Filter status"><option value="all">Semua Status</option><option value="todo">Belum Ditonton</option><option value="done">Selesai</option></select>
+      </div>
+      <div class="grid" id="watchGrid" aria-live="polite"></div>
+    </section>
+  </main>
+</div>
+<nav class="mobile-nav" aria-label="Navigasi mobile">
+  <button class="active" data-view="all"><span>⌂</span>Beranda</button><button data-view="all"><span>▤</span>Semua</button><button id="mobileAdd"><span>⊕</span>Tambah</button><button data-view="done"><span>✓</span>Selesai</button>
+</nav>
+<div class="toast-area" id="toastArea" aria-live="polite"></div>
+<div class="overlay hidden" id="formOverlay" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+  <div class="modal">
+    <div class="modal-head"><h2 id="formTitle">Tambah Tontonan</h2><button class="close" type="button" data-close="formOverlay" aria-label="Tutup">×</button></div>
+    <form id="watchForm" novalidate>
+      <div class="form-grid">
+        <div class="field full"><label for="title">Judul <span class="required">*</span></label><input id="title" name="title" maxlength="100" placeholder="Masukkan judul film atau serial" required><div class="form-error" id="titleError"></div></div>
+        <div class="field"><label for="type">Jenis tontonan</label><select id="type" name="type"><option>Film</option><option>Serial</option></select></div>
+        <div class="field"><label for="genre">Genre</label><input id="genre" name="genre" maxlength="60" placeholder="Mis. Sci-Fi, Drama"></div>
+        <div class="field"><label for="year">Tahun rilis <span class="required">*</span></label><input id="year" name="year" type="number" min="1888" max="2026" placeholder="Contoh: 2024" required></div>
+        <div class="field"><label for="poster">URL poster (opsional)</label><input id="poster" name="poster" type="url" placeholder="https://..."></div>
+        <div class="field full"><label for="synopsis">Sinopsis (opsional)</label><textarea id="synopsis" name="synopsis" maxlength="1200" placeholder="Ceritakan ringkasan film atau serial..."></textarea></div>
+      </div>
+      <div class="form-error" id="formError" role="alert"></div>
+      <div class="modal-actions"><button class="secondary" type="button" data-close="formOverlay">Batal</button><button class="primary" type="submit">Simpan Tontonan</button></div>
+    </form>
+  </div>
+</div>
+<div class="overlay hidden" id="detailOverlay" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="modal">
+    <div class="modal-head"><h2>Detail Tontonan</h2><button class="close" type="button" data-close="detailOverlay" aria-label="Tutup">×</button></div>
+    <div id="detailContent"></div>
+  </div>
+</div>
+<script>
+"use strict";
+const STORAGE_KEY = "mywatchlist_data_v1";
+const CURRENT_YEAR = new Date().getFullYear();
+const posterBase = "https://image.tmdb.org/t/p/w500";
+// Data contoh yang sudah dihapus (juga dibersihkan dari data lama di browser)
+const REMOVED_IDS = ["seed-stranger-things","seed-queen","seed-spiderverse"];
+const seedData = [
+ {id:"seed-interstellar",title:"Interstellar",type:"Film",genre:"Sci-Fi · Adventure",year:2014,poster:posterBase+"/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",status:"todo",rating:0,synopsis:"Ketika bumi semakin tidak layak huni, seorang mantan pilot NASA mengikuti misi berbahaya menembus lubang cacing demi mencari rumah baru bagi umat manusia."},
+ {id:"seed-shawshank",title:"The Shawshank Redemption",type:"Film",genre:"Drama",year:1994,poster:posterBase+"/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",status:"done",rating:5,synopsis:"Seorang bankir yang dihukum atas kejahatan yang tidak dilakukannya membangun persahabatan dan mempertahankan harapan selama bertahun-tahun di penjara."},
+ {id:"seed-wednesday",title:"Wednesday",type:"Serial",genre:"Fantasy · Mystery",year:2022,poster:posterBase+"/9PFonBhy4cQy7Jz20NpMygczOkv.jpg",status:"todo",rating:0,synopsis:"Wednesday Addams menyelidiki serangkaian kejadian misterius di sekolah Nevermore sambil mengungkap rahasia keluarganya."},
+ {id:"seed-dark-knight",title:"The Dark Knight",type:"Film",genre:"Action · Crime",year:2008,poster:posterBase+"/qJ2tW6WMUDux911r6m7haRef0WH.jpg",status:"done",rating:5,synopsis:"Batman menghadapi Joker, kriminal anarkis yang menguji batas moral dan ketahanan Gotham City."},
+ {id:"seed-dune",title:"Dune",type:"Film",genre:"Sci-Fi · Adventure",year:2021,poster:posterBase+"/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",status:"todo",rating:0,synopsis:"Paul Atreides melakukan perjalanan ke planet gurun Arrakis, tempat sumber daya paling berharga di alam semesta menjadi rebutan berbagai kekuatan."}
+];
+const $ = (s,root=document)=>root.querySelector(s);
+const grid=$("#watchGrid"), searchInput=$("#searchInput"), statusFilter=$("#statusFilter");
+let watchlist = loadData();
+let currentDetailId = null;
+let currentView = "all";
+
+function loadData(){
+  try {
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(raw!==null){const parsed=JSON.parse(raw);if(Array.isArray(parsed)){const clean=parsed.filter(x=>!REMOVED_IDS.includes(x.id));if(clean.length!==parsed.length)try{localStorage.setItem(STORAGE_KEY,JSON.stringify(clean));}catch(e){}return clean;}}
+  } catch(e){console.warn("Gagal membaca LocalStorage:",e);setTimeout(()=>toast("Penyimpanan lokal tidak dapat dibaca. Periksa pengaturan browser.","error"),0);}
+  const copy=seedData.map(x=>({...x}));
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(copy));}catch(e){console.warn("Gagal menyimpan data awal:",e);}
+  return copy;
+}
+function persist(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(watchlist));return true;}
+  catch(e){toast("Data gagal disimpan. Penyimpanan browser mungkin penuh.","error");return false;}
+}
+function escapeHTML(value=""){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function safeImageURL(value){
+  try{const u=new URL(value,location.href);return ["http:","https:"].includes(u.protocol)?u.href:"";}
+  catch{return "";}
+}
+function posterHTML(item,extraClass="poster"){
+  const url=safeImageURL(item.poster||"");
+  return `<img class="${extraClass}" src="${escapeHTML(url)}" alt="Poster ${escapeHTML(item.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="poster-fallback" aria-label="Poster tidak tersedia">🎬</div>`;
+}
+function toast(message,type="success"){
+  const el=document.createElement("div");el.className="toast"+(type==="error"?" error":"");el.textContent=(type==="error"?"⚠ ":"✓ ")+message;$("#toastArea").append(el);
+  setTimeout(()=>{el.style.opacity="0";el.style.transform="translateY(-6px)";setTimeout(()=>el.remove(),250);},3300);
+}
+function updateStats(){
+  $("#totalCount").textContent=watchlist.length;
+  $("#todoCount").textContent=watchlist.filter(x=>x.status==="todo").length;
+  $("#doneCount").textContent=watchlist.filter(x=>x.status==="done").length;
+}
+function render(){
+  updateStats();
+  const q=searchInput.value.trim().toLocaleLowerCase("id");
+  const filter=statusFilter.value;
+  const items=watchlist.filter(item=>(currentView==="all"||item.status===currentView)&&(filter==="all"||item.status===filter)&&item.title.toLocaleLowerCase("id").includes(q));
+  $("#resultCount").textContent=`Menampilkan ${items.length} dari ${watchlist.length} tontonan`;
+  if(!items.length){
+    grid.innerHTML=`<div class="empty"><div class="emoji">🎬</div><h3>${watchlist.length?"Tontonan tidak ditemukan":"Belum ada tontonan"}</h3><p>${watchlist.length?"Coba kata kunci atau filter status lain.":"Mulai tambahkan film atau serial favoritmu."}</p><button class="primary" id="emptyAdd">＋ Tambah Tontonan</button></div>`;
+    $("#emptyAdd").addEventListener("click",openForm);return;
+  }
+  grid.innerHTML=items.map(item=>`<article class="movie-card">
+    <div class="poster-wrap">${posterHTML(item)}<span class="status ${item.status==="done"?"done":"todo"}">${item.status==="done"?"✓ Selesai":"◷ Belum Ditonton"}</span></div>
+    <div class="card-body"><h3 class="card-title">${escapeHTML(item.title)}</h3><div class="meta">${escapeHTML(item.type)} · ${escapeHTML(item.genre||"Genre belum diisi")} · ${item.year}</div>
+    ${item.status==="done"&&item.rating?`<div class="stars" aria-label="Rating ${item.rating} dari 5">${"★".repeat(item.rating)}${"☆".repeat(5-item.rating)} <span style="color:#aab4cf;letter-spacing:0">${item.rating}/5</span></div>`:""}
+    <div class="card-actions"><button class="small-btn" data-action="detail" data-id="${escapeHTML(item.id)}">Lihat Detail</button><button class="icon-btn" data-action="delete" data-id="${escapeHTML(item.id)}" aria-label="Hapus ${escapeHTML(item.title)}" title="Hapus">⌫</button></div></div>
+  </article>`).join("");
+}
+function openForm(){
+  $("#watchForm").reset();$("#titleError").textContent="";$("#formError").textContent="";
+  $("#year").max=String(CURRENT_YEAR);$("#year").value=CURRENT_YEAR;
+  $("#formOverlay").classList.remove("hidden");setTimeout(()=>$("#title").focus(),50);
+}
+function closeOverlay(id){$("#"+id).classList.add("hidden");}
+function openDetail(id){
+  const item=watchlist.find(x=>x.id===id);if(!item)return;
+  currentDetailId=id;
+  const rating=item.rating||0;
+  $("#detailContent").innerHTML=`<div class="detail">
+    <div>${posterHTML(item,"detail-poster")}</div>
+    <div><span class="status ${item.status==="done"?"done":"todo"}">${item.status==="done"?"✓ Selesai":"◷ Belum Ditonton"}</span>
+      <h2 id="detailTitle">${escapeHTML(item.title)}</h2><div class="detail-meta">${escapeHTML(item.type)} · ${escapeHTML(item.genre||"Genre belum diisi")} · ${item.year}</div>
+      <div class="rating-box"><div class="rating-label">${item.status==="done"?"Rating kamu":"Rating tersedia setelah selesai ditonton"}</div>
+      ${item.status==="done"?`<div class="rating-stars" role="group" aria-label="Beri rating">${[1,2,3,4,5].map(n=>`<button type="button" data-action="rate" data-rating="${n}" class="${n<=rating?"selected":""}" aria-label="${n} bintang" aria-pressed="${n===rating}">★</button>`).join("")}<span style="align-self:center;color:#ffd45d;font-size:12px;margin-left:5px">${rating?rating+"/5":"Belum dinilai"}</span></div>`:""}
+      </div></div>
+    <div class="field full"><label>Sinopsis</label><p>${escapeHTML(item.synopsis||"Sinopsis belum tersedia. Kamu dapat menambahkan sinopsis melalui data tontonan.")}</p></div>
+    <div class="detail-actions">
+      <button class="primary" data-action="toggle" data-id="${escapeHTML(item.id)}">${item.status==="done"?"↶ Kembalikan ke Belum Ditonton":"✓ Tandai Selesai"}</button>
+      <button class="secondary" data-action="edit" data-id="${escapeHTML(item.id)}">✎ Edit</button>
+      <button class="danger" data-action="delete" data-id="${escapeHTML(item.id)}">Hapus</button>
+    </div></div>`;
+  $("#detailOverlay").classList.remove("hidden");
+}
+function toggleStatus(id){
+  const item=watchlist.find(x=>x.id===id);if(!item)return;
+  item.status=item.status==="done"?"todo":"done";
+  if(item.status!=="done")item.rating=0;
+  persist();render();openDetail(id);toast(`Status "${item.title}" diperbarui menjadi ${item.status==="done"?"Selesai":"Belum Ditonton"}.`);
+}
+function deleteItem(id){
+  const item=watchlist.find(x=>x.id===id);if(!item)return;
+  if(!confirm(`Hapus "${item.title}" dari daftar tontonan? Tindakan ini tidak dapat dibatalkan.`))return;
+  watchlist=watchlist.filter(x=>x.id!==id);persist();closeOverlay("detailOverlay");render();toast(`"${item.title}" berhasil dihapus.`);
+}
+function editItem(id){
+  const item=watchlist.find(x=>x.id===id);if(!item)return;
+  // Edit menggunakan formulir yang sama dan memperbarui item, bukan membuat duplikat.
+  $("#watchForm").reset();$("#titleError").textContent="";$("#formError").textContent="";
+  $("#formTitle").textContent="Edit Tontonan";$("#title").value=item.title;$("#type").value=item.type;$("#genre").value=item.genre||"";$("#year").value=item.year;$("#poster").value=item.poster||"";$("#synopsis").value=item.synopsis||"";
+  $("#year").max=String(CURRENT_YEAR);$("#watchForm").dataset.editId=id;
+  closeOverlay("detailOverlay");$("#formOverlay").classList.remove("hidden");$("#title").focus();
+}
+$("#watchForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const title=$("#title").value.trim(),year=Number($("#year").value),posterRaw=$("#poster").value.trim();
+  $("#titleError").textContent="";$("#formError").textContent="";
+  if(!title){$("#titleError").textContent="Judul wajib diisi.";$("#title").focus();return;}
+  if(!Number.isInteger(year)||year<1888||year>CURRENT_YEAR){$("#formError").textContent=`Tahun rilis harus berupa angka antara 1888 dan ${CURRENT_YEAR}.`;$("#year").focus();return;}
+  let poster="";
+  if(posterRaw){poster=safeImageURL(posterRaw);if(!poster){$("#formError").textContent="URL poster harus berupa alamat gambar HTTP atau HTTPS yang valid.";$("#poster").focus();return;}}
+  const editId=$("#watchForm").dataset.editId;
+  const data={title,type:$("#type").value,genre:$("#genre").value.trim(),year,poster,synopsis:$("#synopsis").value.trim()};
+  if(editId){
+    const item=watchlist.find(x=>x.id===editId);if(!item)return;
+    Object.assign(item,data);delete $("#watchForm").dataset.editId;
+    persist();render();closeOverlay("formOverlay");$("#formTitle").textContent="Tambah Tontonan";toast(`"${title}" berhasil diperbarui.`);
+  }else{
+    // Cegah klik submit berulang menghasilkan judul duplikat.
+    if(watchlist.some(x=>x.title.toLocaleLowerCase("id")===title.toLocaleLowerCase("id")&&x.type===data.type&&x.year===year)){
+      $("#formError").textContent="Tontonan dengan judul, jenis, dan tahun yang sama sudah ada.";return;
+    }
+    watchlist.unshift({id:crypto.randomUUID?crypto.randomUUID():"item-"+Date.now()+"-"+Math.random().toString(16).slice(2),...data,status:"todo",rating:0});
+    persist();render();closeOverlay("formOverlay");toast(`"${title}" berhasil ditambahkan.`);
+  }
+  $("#watchForm").dataset.editId="";
+});
+grid.addEventListener("click",e=>{
+  const btn=e.target.closest("[data-action]");if(!btn)return;
+  const {action,id}=btn.dataset;
+  if(action==="detail")openDetail(id);
+  if(action==="delete")deleteItem(id);
+});
+$("#detailContent").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-action]");if(!btn)return;
+  const action=btn.dataset.action,id=btn.dataset.id||currentDetailId;
+  if(action==="toggle")toggleStatus(id);
+  if(action==="delete")deleteItem(id);
+  if(action==="edit")editItem(id);
+  if(action==="rate"){
+    const item=watchlist.find(x=>x.id===currentDetailId);if(!item||item.status!=="done")return;
+    item.rating=Number(btn.dataset.rating);persist();render();openDetail(item.id);toast(`Rating ${item.rating}/5 disimpan.`);
+  }
+});
+$("#addBtn").addEventListener("click",openForm);$("#mobileAdd").addEventListener("click",openForm);
+searchInput.addEventListener("input",render);statusFilter.addEventListener("change",render);
+document.querySelectorAll("[data-view]").forEach(btn=>btn.addEventListener("click",()=>{
+  currentView="all";statusFilter.value=btn.dataset.view;document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===currentView));render();
+}));
+document.querySelectorAll("[data-close]").forEach(btn=>btn.addEventListener("click",()=>{
+  const form=$("#watchForm");if(btn.dataset.close==="formOverlay"){delete form.dataset.editId;$("#formTitle").textContent="Tambah Tontonan";}
+  closeOverlay(btn.dataset.close);
+}));
+document.querySelectorAll(".overlay").forEach(overlay=>overlay.addEventListener("click",e=>{if(e.target===overlay)closeOverlay(overlay.id);}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".overlay:not(.hidden)").forEach(o=>closeOverlay(o.id));});
+$("#year").max=String(CURRENT_YEAR);
+render();
+</script>
+</body>
+</html>
